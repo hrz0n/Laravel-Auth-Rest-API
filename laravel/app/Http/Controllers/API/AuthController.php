@@ -13,7 +13,7 @@ class AuthController extends BaseController
     public function index()
     {
         $users = User::all();
-        return $this->sendResponse($users, 'Displayen all users data');
+        return $this->sendResponse($users, 'Displayed all users data');
     }
 
     public function register(Request $request)
@@ -24,7 +24,7 @@ class AuthController extends BaseController
             'password' => 'required'
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return $this->sendError('Validation Error', $validator->errors());
         }
 
@@ -32,16 +32,16 @@ class AuthController extends BaseController
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         $success['token'] = $user->createToken('MyAuthApp')->plainTextToken;
-        $success['username'] = $user->name;
+        $success['email'] = $user->email;
         return $this->sendResponse($success, 'User registered successfully!');
     }
 
     public function login(Request $request)
     {
-        if(Auth::attempt(['name' => $request->name, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $success['token'] = $user->createToken('MyAuthApp')->plainTextToken;
-            $success['username'] = $user->name;
+            $success['email'] = $user->email;
             return $this->sendResponse($success, 'User login successfully!');
         }
         return $this->sendError('Unauthorised', ['error' => 'Unauthorised']);

@@ -19,6 +19,7 @@ Route::controller(\App\Http\Controllers\API\AuthController::class)->group(functi
 });
 
 
-Route::middleware('auth:sanctum')->group(function() {
-    Route::get('/users', [\App\Http\Controllers\API\AuthController::class,'index'])->name('index');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', [\App\Http\Controllers\API\AuthController::class, 'index'])->name('index');
+    Route::post('/image-upload', [\App\Http\Controllers\API\ImageController::class, 'upload'])->name('upload');
 });
